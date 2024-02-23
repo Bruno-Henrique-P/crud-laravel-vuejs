@@ -101,12 +101,12 @@
         </div>
         
       <div class="form-floating mb-3">
-          <input class="form-control" type="text" name="cliente" disabled v-model="orcamento.cliente">
+          <input class="form-control" type="text" name="cliente" disabled v-model="orcamento.nameCliente">
           <label class="form-label" for="cliente">Cliente</label>
       </div>
 
       <div class="form-floating mb-3">
-        <input class="form-control" type="text" name="vendedor" disabled v-model="orcamento.vendedor">
+        <input class="form-control" type="text" name="vendedor" disabled v-model="orcamento.nameVendedor">
         <label for="vendedor">Vendedor</label>
         
       </div>
