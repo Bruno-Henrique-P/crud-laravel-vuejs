@@ -5,10 +5,10 @@
         <input v-model="orcamento.id" type="text" placeholder="vendedor" id="id" class="form-control" disabled>
 
         <label for="vendedor" class="form-label">Vendedor</label>
-        <input v-model="Vendedor" type="text" placeholder="vendedor" id="vendedor" class="form-control">
+        <input v-model="orcamento.nameVendedor" type="text" placeholder="vendedor" id="vendedor" class="form-control">
 
         <label for="cliente" class="form-label">Cliente</label>
-        <input v-model="Cliente" type="text" placeholder="cliente" id="cliente" class="form-control">
+        <input v-model="orcamento.nameCliente" type="text" placeholder="cliente" id="cliente" class="form-control">
 
         <label for="descrição" class="form-label">Descrição</label>
         <input v-model="orcamento.descricao" type="text" placeholder="descricao" id="descrição" class="form-control">
@@ -19,22 +19,6 @@
             submit
         </button>
     </form>
-
-<!-- <div class="toast-container position-fixed bottom-0 end-0 p-3" >
-  <div  id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <img  class="rounded me-2" >
-      <strong class="me-auto">Bootstrap</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-        {{ mensagem }}
-    </div>
-  </div>
-</div> -->
-<!-- <button  type="button" >
-  Launch demo modal
-</button> -->
 
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -89,16 +73,14 @@ export default{
         async getClientesid() {
             let url = `http://127.0.0.1:8000/api/getcorcamento/${this.$route.params.id}`;
             await axios.get(url).then(response => {
-                this.orcamento = response.data[0];
-                this.Cliente = response.data[1].nameCliente;
-                this.Vendedor = response.data[1].nameVendedor;
+                this.orcamento = response.data;
             });
         },
         async updatecliente() {
             let formData = new FormData();
             formData.append('descricao', this.orcamento.descricao);
-            formData.append('cliente_id', this.Cliente);
-            formData.append('vendedores_id', this.Vendedor);
+            formData.append('cliente', this.orcamento.nameCliente);
+            formData.append('vendedores', this.orcamento.nameVendedor);
             formData.append('valor', this.orcamento.valor);
             let url = `http://127.0.0.1:8000/api/updateorcamento/${this.$route.params.id}`;
             await axios.post(url, formData).then((response) => {

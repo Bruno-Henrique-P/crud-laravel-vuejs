@@ -56,8 +56,8 @@ export default{
                 let formData = new FormData();
                 formData.append('descricao',this.orcamento.descricao)
                 formData.append('valor',this.orcamento.valor)
-                formData.append('vendedores_id',this.orcamento.vendedor)
-                formData.append('cliente_id',this.orcamento.cliente)
+                formData.append('vendedores',this.orcamento.vendedor)
+                formData.append('cliente',this.orcamento.cliente)
                 let url = "http://127.0.0.1:8000/api/saveorcamento"
                 console.log(formData)
                 await axios.post(url,formData).then((response) =>{

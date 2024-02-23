@@ -22,13 +22,30 @@ class OrcamentoController extends Controller
     public function saveorcamento(Request $request) {
         $orcamento = new Orcamento();
 
-        $cliente = Cliente::where('name',$request->cliente_id)->first();
-        $vendedores = Vendedores::where('name',$request->vendedores_id)->first();
+        $cliente = Cliente::where('name',$request->cliente)->first();
+        $vendedores = Vendedores::where('name',$request->vendedores)->first();
         
+        echo $vendedores;
+
+        if($cliente == null ){
+            return response()-> json([
+                "message" => "Cliente não encontrado",
+                "code" => 400
+            ]);
+        }
+        if($vendedores == null){
+            return response()-> json([
+                "message" => "Vendedor não encontrado",
+                "code" => 400
+            ]);
+        }
+
         $orcamento->descricao = $request->descricao;
 
         $orcamento->cliente_id = $cliente->id;
+        $orcamento->nameCliente = $cliente->name;
         $orcamento->vendedores_id = $vendedores->id;
+        $orcamento->nameVendedor = $vendedores->name;
 
         $orcamento->valor = $request->valor;
         $orcamento->save();
@@ -54,12 +71,7 @@ class OrcamentoController extends Controller
     }
     public function getcorcamento($id){
         $orcamento = Orcamento::find($id);
-        $cliente = Cliente::find($orcamento->cliente_id);
-        $vendedores = Vendedores::find($orcamento->vendedores_id);
-        $names = array("nameCliente"=>$cliente->name,"nameVendedor"=>$vendedores->name);
-        
-
-        return [$orcamento,  $names];
+        return response()->json($orcamento);
 
     }
     public function updateorcamento($id, Request $request){
@@ -68,8 +80,8 @@ class OrcamentoController extends Controller
         $orcamento->descricao = $request->descricao;
         $orcamento->valor = $request->valor;
 
-        $cliente = Cliente::where('name',$request->cliente_id)->first();
-        $vendedores = Vendedores::where('name',$request->vendedores_id)->first();
+        $cliente = Cliente::where('name',$request->cliente)->first();
+        $vendedores = Vendedores::where('name',$request->vendedores)->first();
 
         if( $vendedores == null){
             return response()-> json([
@@ -85,7 +97,9 @@ class OrcamentoController extends Controller
         }
 
         $orcamento->cliente_id = $cliente->id;
+        $orcamento->nameCliente = $cliente->name;
         $orcamento->vendedores_id = $vendedores->id;
+        $orcamento->nameVendedor = $vendedores->name;
        
         $orcamento->save();
 
