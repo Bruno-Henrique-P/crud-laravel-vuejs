@@ -41,8 +41,8 @@
     <tbody>
       <tr  v-for="(orcamento,index) in orcamentos" :key="orcamento.id">
         <th scope="row">{{orcamento.id}}</th>
-        <td>{{orcamento.vendedor}}</td>
-        <td>{{orcamento.cliente}}</td>
+        <td>{{orcamento.nameVendedor}}</td>
+        <td>{{orcamento.nameCliente}}</td>
         <td>{{orcamento.descricao}}</td>
         <td>R$ {{orcamento.valor}}</td>
         <td>{{orcamento.created_at}}</td>
@@ -204,8 +204,8 @@
         formData.append("dataFim",this.dataFim)
         await axios.post(url,formData).then(response=>{
             this.genericFun(response)
-            this.pages= response.data[0].last_page
-            this.last_page= response.data[0].last_page
+            this.pages= response.data.last_page
+            this.last_page= response.data.last_page
         })
        
       },
@@ -216,7 +216,7 @@
         formData.append("search",this.search )
         await axios.post(url,formData).then(response=>{
             this.genericFun(response)
-            this.pages= response.data[0].last_page
+            this.pages= response.data.last_page
         })
       },
 
@@ -231,7 +231,7 @@
         formData.append("search",this.search )
         await axios.post(url,formData).then(response=>{
             this.genericFun(response)
-            this.rows = response.data[0].last_page
+            this.rows = response.data.last_page
         }) 
       },
       async next()  {
@@ -251,16 +251,7 @@
       getOrca(index){
         this.orcamento = this.orcamentos[index]
       },  
-      getNames(response){
-        
-        for (let i = 0; i < response.data[1].length; i++){
-          this.orcamentos[i]['cliente'] = response.data[1][i].original.name
-        }
-        for (let i = 0; i < response.data[2].length; i++){
-          this.orcamentos[i]['vendedor'] = response.data[2][i].original.name
-        }
 
-      },
       generatePagesArray(currentPage, collectionLength, rowsPerPage, paginationRange){
       var pages = [];
       var totalPages = Math.ceil(collectionLength / rowsPerPage);
@@ -315,9 +306,8 @@
       }
     },
     genericFun(response){
-      this.orcamentos = response.data[0].data
-      this.getNames(response)
-      this.source = response.data[0]
+      this.orcamentos = response.data.data
+      this.source = response.data
       this.consertarData()
     }
 },

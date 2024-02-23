@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Cliente;
+use App\Models\Vendedores;
 use Faker\Core\Number;
 use Faker\Guesser\Name;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,10 +22,14 @@ class OrcamentoFactory extends Factory
      */
     public function definition(): array
     {
+        $cliente = Cliente::find(rand(1,100));
+        $vendedor = Vendedores::find(rand(1,10));
         return [
             'descricao' => $this->faker->text(),
-            'cliente_id' => $this->faker->randomNumber(2,false),
-            'vendedores_id' =>$this->faker->randomNumber(1, false),
+            'cliente_id' => $cliente->id,
+            'nameCliente' => $cliente->name,
+            'vendedores_id' =>$vendedor->id,
+            'nameVendedor' =>$vendedor->name,
             'valor' => $this->faker->randomNumber(5, false)
             
         ];

@@ -18,7 +18,6 @@ class OrcamentoSeeder extends Seeder
     public function run(): void
     {
        Orcamento::factory(500)->create(); 
-    //    Cliente::factory(100)->create();
-    //    Vendedores::factory(10)->create();     
+  
     }
 }

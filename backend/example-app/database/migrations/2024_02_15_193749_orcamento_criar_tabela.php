@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('descricao');
             $table->float('valor',8,2);
             $table->foreignIdFor(Cliente::class);
+            $table->string('nameCliente');
             $table->foreignIdFor(Vendedores::class);
+            $table->string('nameVendedor');
             $table->timestamps();
         });
     }

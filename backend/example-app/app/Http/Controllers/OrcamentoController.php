@@ -102,7 +102,9 @@ class OrcamentoController extends Controller
         $orcamento = Orcamento::when($request->has('search'),function($whenQuerry) use ($request){
             $whenQuerry->where('id','LIKE',"{$request->search}")
                         ->orWhere('vendedores_id','LIKE',"%{$request->search}%")
-                        ->orWhere('cliente_id','LIKE',"%{$request->search}%");
+                        ->orWhere('cliente_id','LIKE',"%{$request->search}%")
+                        ->orWhere('nameCliente','LIKE',"%{$request->search}%")
+                        ->orWhere('nameVendedor','LIKE',"%{$request->search}%");
             })
             ->when($request->filled("dataInit"),function($whenQuerry) use ($request){
                 $whenQuerry->Where('created_at','>=',"{$request->dataInit} 00:00:00.00");
@@ -112,27 +114,25 @@ class OrcamentoController extends Controller
             ->orderBy('id')
             ->paginate();
 
-            $namesClientes = $this->getClientesName($orcamento);
-            $namesVendedor = $this->getVendedoresName($orcamento);
                                       
-        return response()->json([$orcamento,$namesClientes,$namesVendedor]);                
+        return response()->json($orcamento);                
     }
-    public function getClientesName($orcamento) {
-        $cliente = new ClienteController();
-        $namesCliente = [];
-        foreach($orcamento as $x){
-            $nameCliente = $cliente->getcliente($x->cliente_id);
-            array_push($namesCliente,$nameCliente);
-        }
-        return $namesCliente;
-    }
-    public function getVendedoresName($orcamento) {
-        $vendedor = new VendedorController();
-        $namesVendedor = [];
-        foreach($orcamento as $x){
-            $nameVendedor = $vendedor->getVendedor($x->vendedores_id);
-            array_push($namesVendedor,$nameVendedor);
-        }
-        return $namesVendedor;
-    }
+    // public function getClientesName($orcamento) {
+    //     $cliente = new ClienteController();
+    //     $namesCliente = [];
+    //     foreach($orcamento as $x){
+    //         $nameCliente = $cliente->getcliente($x->cliente_id);
+    //         array_push($namesCliente,$nameCliente);
+    //     }
+    //     return $namesCliente;
+    // }
+    // public function getVendedoresName($orcamento) {
+    //     $vendedor = new VendedorController();
+    //     $namesVendedor = [];
+    //     foreach($orcamento as $x){
+    //         $nameVendedor = $vendedor->getVendedor($x->vendedores_id);
+    //         array_push($namesVendedor,$nameVendedor);
+    //     }
+    //     return $namesVendedor;
+    // }
 }
